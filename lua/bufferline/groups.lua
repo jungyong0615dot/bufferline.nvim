@@ -305,6 +305,7 @@ local function group_by(attr)
   end
 end
 
+M.get_group_by_name = group_by("name")
 local group_by_name = group_by("name")
 local group_by_priority = group_by("priority")
 
@@ -538,11 +539,11 @@ end
 M.builtin = builtin
 M.separator = separator
 
-if utils.is_test() then
+-- if utils.is_test() then
   M.state = group_state
   M.sort_by_groups = sort_by_groups
   M.get_manual_group = get_manual_group
   M.set_manual_group = set_manual_group
-end
+-- end
 
 return M
