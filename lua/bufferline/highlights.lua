@@ -127,7 +127,12 @@ local function get_hl_group_for_state(vis, hls, name, base)
   if not base then base = name end
   local state = ({ [visibility.INACTIVE] = "visible", [visibility.SELECTED] = "selected" })[vis]
   local hl_name = state and fmt("%s_%s", name, state) or base
-  if hls[hl_name].hl_group then return hls[hl_name].hl_group end
+  if hls[hl_name].hl_group then 
+    -- vim.print(hls[hl_name].hl_group)
+    -- vim.print(hls)
+    -- vim.print(hl_name)
+    return hls[hl_name].hl_group 
+  end
   log.debug(fmt("%s highlight not found", name))
   return ""
 end

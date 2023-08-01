@@ -46,6 +46,14 @@ local function space_end(hl_groups) return { { highlight = hl_groups.fill.hl_gro
 function separator.pill(group, hls, count)
   local bg_hl = hls.fill.hl_group
   local name, display_name = group.name, group.display_name
+
+  if group.name == "custom" and vim.g.cg1 ~= nil then
+    display_name = vim.g.cg1
+  end
+  if group.name == "motsuc" and vim.g.cg2 ~= nil then
+    display_name = vim.g.cg2
+  end
+
   local sep_grp, label_grp = hls[fmt("%s_separator", name)], hls[fmt("%s_label", name)]
   local sep_hl = sep_grp and sep_grp.hl_group or hls.group_separator.hl_group
   local label_hl = label_grp and label_grp.hl_group or hls.group_label.hl_group
@@ -68,9 +76,17 @@ end
 function separator.tab(group, hls, count)
   local hl = hls.fill.hl_group
   local indicator_hl = hls.buffer.hl_group
+  local group_name = group.name
+  if group.name == "custom" and vim.g.cg1 ~= nil then
+    group_name = vim.g.cg1
+  end
+  if group.name == "motsuc" and vim.g.cg2 ~= nil then
+    group_name = vim.g.cg2
+  end
+
   local indicator = {
     { highlight = hl, text = C.padding },
-    { highlight = indicator_hl, text = C.padding .. group.name .. count .. C.padding },
+    { highlight = indicator_hl, text = C.padding .. group_name .. count .. C.padding },
     { highlight = hl, text = C.padding },
   }
   return { sep_start = indicator, sep_end = space_end(hls) }
