@@ -47,11 +47,11 @@ function separator.pill(group, hls, count)
   local bg_hl = hls.fill.hl_group
   local name, display_name = group.name, group.display_name
 
-  if group.name == "custom" and vim.g.cg1 ~= nil then
-    display_name = vim.g.cg1
+  if group.name == "custom" and vim.t.cg1 ~= nil then
+    display_name = vim.t.cg1
   end
-  if group.name == "motsuc" and vim.g.cg2 ~= nil then
-    display_name = vim.g.cg2
+  if group.name == "motsuc" and vim.t.cg2 ~= nil then
+    display_name = vim.t.cg2
   end
 
   local sep_grp, label_grp = hls[fmt("%s_separator", name)], hls[fmt("%s_label", name)]
