@@ -46,20 +46,25 @@ local function space_end(hl_groups) return { { highlight = hl_groups.fill.hl_gro
 function separator.pill(group, hls, count)
   local bg_hl = hls.fill.hl_group
   local name, display_name = group.name, group.display_name
+  local custom_group_ids = require("bufferline.custom_group").custom_group_ids
 
   local present, custom_group_names = pcall(
     function(tabnr) return vim.api.nvim_tabpage_get_var(tabnr, "custom_group_names") end,
     0
   )
 
-  if not present then custom_group_names = {} end
+  if not present then
+    custom_group_names = {}
+  else
 
-  local custom_group_ids = require("bufferline.custom_group").custom_group_ids
-
-  if present then
     for idx, custom_group_name in ipairs(custom_group_names) do
-      if group.name == custom_group_ids[idx].name then display_name = custom_group_name end
+
+      if group.name == custom_group_ids[idx].name then
+        display_name = custom_group_name
+      end
+
     end
+
   end
 
   local sep_grp, label_grp = hls[fmt("%s_separator", name)], hls[fmt("%s_label", name)]
