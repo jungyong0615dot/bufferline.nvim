@@ -47,22 +47,18 @@ function separator.pill(group, hls, count)
   local bg_hl = hls.fill.hl_group
   local name, display_name = group.name, group.display_name
 
-  local present, custom_group_names = pcall(function(tabnr)
-    return vim.api.nvim_tabpage_get_var(tabnr, "custom_group_names")
-  end, 0
+  local present, custom_group_names = pcall(
+    function(tabnr) return vim.api.nvim_tabpage_get_var(tabnr, "custom_group_names") end,
+    0
   )
 
-  if not present then
-    custom_group_names = {}
-  end
-  vim.print(custom_group_names)
+  if not present then custom_group_names = {} end
 
-  if present and custom_group_names ~= nil then
-    for _, custom_group_name in ipairs(custom_group_names) do
-      if group.name == custom_group_name then
-        display_name = custom_group_name
-        break
-      end
+  local custom_group_ids = require("bufferline.custom_group").custom_group_ids
+
+  if present then
+    for idx, custom_group_name in ipairs(custom_group_names) do
+      if group.name == custom_group_ids[idx].name then display_name = custom_group_name end
     end
   end
 
@@ -90,19 +86,17 @@ function separator.tab(group, hls, count)
   local indicator_hl = hls.buffer.hl_group
   local group_name = group.name
 
-  local present, custom_group_names = pcall(function(tabnr)
-    return vim.api.nvim_tabpage_get_var(tabnr, "custom_group_names")
-    end, 0
+  local present, custom_group_names = pcall(
+    function(tabnr) return vim.api.nvim_tabpage_get_var(tabnr, "custom_group_names") end,
+    0
   )
 
   if present and custom_group_names ~= nil then
     for _, custom_group_name in ipairs(custom_group_names) do
-      if group.name == custom_group_name then
-        group_name = custom_group_name
-      end
+      if group.name == custom_group_name then group_name = custom_group_name end
     end
   end
-  vim.print(group_name)
+
 
   local indicator = {
     { highlight = hl, text = C.padding },
