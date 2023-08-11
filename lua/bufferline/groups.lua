@@ -47,11 +47,17 @@ function separator.pill(group, hls, count)
   local bg_hl = hls.fill.hl_group
   local name, display_name = group.name, group.display_name
 
-  if group.name == "custom" and vim.t.cg1 ~= nil then
-    display_name = vim.t.cg1
-  end
-  if group.name == "motsuc" and vim.t.cg2 ~= nil then
-    display_name = vim.t.cg2
+  local present, custom_group_names = pcall(function() vim.api.nvim_tabpage_get_var(0, "custom_group_names") end)
+
+
+
+  if present and custom_group_names ~= nil then
+    for _, custom_group_name in ipairs(custom_group_names) do
+      if group.name == custom_group_name then
+        display_name = custom_group_name
+        break
+      end
+    end
   end
 
   local sep_grp, label_grp = hls[fmt("%s_separator", name)], hls[fmt("%s_label", name)]
@@ -77,12 +83,6 @@ function separator.tab(group, hls, count)
   local hl = hls.fill.hl_group
   local indicator_hl = hls.buffer.hl_group
   local group_name = group.name
-  if group.name == "custom" and vim.g.cg1 ~= nil then
-    group_name = vim.g.cg1
-  end
-  if group.name == "motsuc" and vim.g.cg2 ~= nil then
-    group_name = vim.g.cg2
-  end
 
   local indicator = {
     { highlight = hl, text = C.padding },
@@ -556,10 +556,10 @@ M.builtin = builtin
 M.separator = separator
 
 -- if utils.is_test() then
-  M.state = group_state
-  M.sort_by_groups = sort_by_groups
-  M.get_manual_group = get_manual_group
-  M.set_manual_group = set_manual_group
+M.state = group_state
+M.sort_by_groups = sort_by_groups
+M.get_manual_group = get_manual_group
+M.set_manual_group = set_manual_group
 -- end
 
 return M
