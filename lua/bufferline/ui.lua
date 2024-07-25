@@ -116,7 +116,9 @@ end
 ---@param segments bufferline.Segment[]
 ---@return integer
 local function get_component_size(segments)
-  assert(utils.is_list(segments), "Segments must be a list")
+  -- vim.print(vim.islist(segments))
+  -- vim.print(segments)
+  -- assert(utils.is_list(segments), "Segments must be a list")
   local sum = 0
   for _, s in pairs(segments) do
     if has_text(s) then sum = sum + strwidth(tostring(s.text)) end
