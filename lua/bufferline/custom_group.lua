@@ -2,7 +2,7 @@ local M = {}
 M.custom_group_ids = {
   { name = "custom", sp = "Gray" },
   { name = "motsuc", sp = "Brown" },
-  { name = "vjv", sp = "Black" },
+  { name = "vjv", sp = "pink" },
   { name = "fire", sp = "red" },
   { name = "slamdunk", sp = "green" },
 }
