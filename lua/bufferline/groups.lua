@@ -45,26 +45,14 @@ local function space_end(hl_groups) return { { highlight = hl_groups.fill.hl_gro
 ---@return bufferline.Separators
 function separator.pill(group, hls, count)
   local bg_hl = hls.fill.hl_group
-  local name, display_name = group.name, group.display_name
-  local custom_group_ids = require("bufferline.custom_group").custom_group_ids
+  local name = group.name
+  local group_type = name
 
-  local present, custom_group_names = pcall(
-    function(tabnr) return vim.api.nvim_tabpage_get_var(tabnr, "custom_group_names") end,
-    0
-  )
-
-  if not present then
-    custom_group_names = {}
+  local display_name
+  if require("prosession.custom_group").get_current_tab_group(group_type) ~= nil then
+    display_name = require("prosession.custom_group").get_current_tab_group(group_type)["name"]
   else
-
-    for idx, custom_group_name in ipairs(custom_group_names) do
-
-      if group.name == custom_group_ids[idx].name then
-        display_name = custom_group_name
-      end
-
-    end
-
+    display_name = name
   end
 
   local sep_grp, label_grp = hls[fmt("%s_separator", name)], hls[fmt("%s_label", name)]
@@ -89,19 +77,8 @@ end
 function separator.tab(group, hls, count)
   local hl = hls.fill.hl_group
   local indicator_hl = hls.buffer.hl_group
-  local group_name = group.name
-
-  local present, custom_group_names = pcall(
-    function(tabnr) return vim.api.nvim_tabpage_get_var(tabnr, "custom_group_names") end,
-    0
-  )
-
-  if present and custom_group_names ~= nil then
-    for _, custom_group_name in ipairs(custom_group_names) do
-      if group.name == custom_group_name then group_name = custom_group_name end
-    end
-  end
-
+  local group_type = group.name
+  local group_name = require("prosession.custom_group").get_current_tab_group(group_type)["name"]
 
   local indicator = {
     { highlight = hl, text = C.padding },
@@ -133,7 +110,7 @@ function Group:new(o, index)
     id = o.id or name,
     hidden = o.hidden == nil and false or o.hidden,
     name = name,
-    display_name = o.name,
+    display_name = name,
     priority = o.priority or index,
   })
   return setmetatable(o, self)
